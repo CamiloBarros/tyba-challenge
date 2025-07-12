@@ -5,7 +5,7 @@ declare global {
   namespace Express {
     interface Request {
       user?: IUser & Document;
-      token?: {
+      auth?: {
         _id: string;
         name: string;
         exp: number;
@@ -15,5 +15,6 @@ declare global {
 
   namespace Models {
     export type UserModel = Model<IUser & Document>;
+    export type BlacklistedTokenModel = Model<Document & IBlacklistToken>;
   }
 }

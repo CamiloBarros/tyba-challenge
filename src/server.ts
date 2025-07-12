@@ -3,9 +3,10 @@ import config from "@/config";
 import express, { Express } from "express";
 import loaders from "@/loaders";
 
+
 function startServer(): void {
   console.log("Starting server...");
-  
+
   const app: Express = express();
   loaders(app);
 

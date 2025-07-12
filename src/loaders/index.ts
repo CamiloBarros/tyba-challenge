@@ -10,6 +10,7 @@ export default async (expressApp: Express): Promise<void> => {
   // Load dependency injector
   const models: Array<IModelConfig> = [
     { name: "userModel", instance: (await import("@/models/user")).default },
+    { name: "blacklistedTokenModel", instance: (await import("@/models/blacklistedToken")).default },
     // Add other models as needed
   ];
 
