@@ -1,25 +1,28 @@
-import express, { Express } from 'express';
-import cors from 'cors';
+import express, { Express } from "express";
+import config from "@/config";
+import routes from "@/api";
+
+import cors from "cors";
 
 const app: Express = express();
-const PORT = process.env['PORT'] || 3000;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(config.apiPrefix, routes());
 
 // Rutas
-app.get('/health', (req, res) => {
+app.get("/health", (req, res) => {
   res.json({
-    status: 'OK',
-    message: '🟢 API funcionando correctamente',
+    status: "OK",
+    message: "🟢 API funcionando correctamente",
   });
 });
 
 // Iniciar servidor
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor ejecutándose en http://localhost:${PORT}`);
-  console.log(`📚 Health check: http://localhost:${PORT}/health`);
+app.listen(config.port, () => {
+  console.log(`🚀 Servidor ejecutándose en http://localhost:${config.port}`);
+  console.log(`📚 Health check: http://localhost:${config.port}/health`);
 });
 
 export default app;
