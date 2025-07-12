@@ -17,6 +17,9 @@ const blacklistedTokenSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+},
+{
+  versionKey: false, // Deshabilitar versionado
 });
 
 export default mongoose.model<IBlacklistToken & mongoose.Document>('BlacklistedToken', blacklistedTokenSchema);

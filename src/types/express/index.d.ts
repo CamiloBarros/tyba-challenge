@@ -1,5 +1,7 @@
 import { Document, Model } from "mongoose";
 import { IUser } from "@/interfaces/IUser";
+import { ITransactionLog } from "@/interfaces/ITransactionLog";
+import { IBlacklistToken } from "@/interfaces/IBlacklistToken";
 
 declare global {
   namespace Express {
@@ -16,5 +18,7 @@ declare global {
   namespace Models {
     export type UserModel = Model<IUser & Document>;
     export type BlacklistedTokenModel = Model<Document & IBlacklistToken>;
+    export type TransactionLogModel = Model<Document & ITransactionLog>;
+    export type EventDispatcher = EventDispatcher;
   }
 }

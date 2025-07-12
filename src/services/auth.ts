@@ -4,15 +4,20 @@ import argon2 from "argon2";
 import config from "@/config";
 import { randomBytes } from "crypto";
 import { IUser, IUserInputDTO } from "@/interfaces/IUser";
+import { EventDispatcher } from 'event-dispatch';
+import events from "@/subscribers/events";
 
 @Service()
 export default class AuthService {
   private userModel: Models.UserModel;
   private blacklistedTokenModel: Models.BlacklistedTokenModel;
+  private eventDispatcher: EventDispatcher;
 
-  constructor() {
+  constructor(
+  ) {
     this.userModel = Container.get("userModel");
     this.blacklistedTokenModel = Container.get("blacklistedTokenModel");
+    this.eventDispatcher = Container.get("eventDispatcher");
   }
 
   public async register(
@@ -37,6 +42,11 @@ export default class AuthService {
       }
 
       const token = this.generateToken(userRecord);
+
+      // Emitir evento de usuario registrado
+      setImmediate(() => {
+        this.eventDispatcher.dispatch(events.user.register, userRecord._id);
+      });
 
       return { user: userRecord, token };
     } catch (error: unknown) {
@@ -65,6 +75,11 @@ export default class AuthService {
         throw new Error("Invalid password");
       }
 
+      // Emitir evento de usuario autenticado
+      setImmediate(() => {
+        this.eventDispatcher.dispatch(events.user.login, userRecord._id);
+      });
+
       const token = this.generateToken(userRecord);
       return { user: userRecord, token };
     } catch (error: unknown) {
@@ -75,11 +90,17 @@ export default class AuthService {
     }
   }
 
-  public async logout(token: string): Promise<void> {
+  public async logout(token: string, userId: string): Promise<void> {
     try {
       await this.blacklistedTokenModel.create({
         token,
       });
+
+      // Emitir evento de usuario desconectado
+      setImmediate(() => {
+        this.eventDispatcher.dispatch(events.user.logout, userId);
+      });
+      
     } catch (error: unknown) {
       if (error instanceof Error) {
         throw new Error(`Logout failed: ${error.message}`);

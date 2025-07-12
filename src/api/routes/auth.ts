@@ -4,6 +4,7 @@ import AuthService from "@/services/auth";
 import { IUserInputDTO } from "@/interfaces/IUser";
 import { celebrate, Joi } from "celebrate";
 import isAuth, { getTokenFromHeader } from "../middlewares/isAuth";
+import attachUser from "../middlewares/attachUser";
 
 const route = Router();
 
@@ -67,6 +68,7 @@ export default (app: Router): void => {
   route.get(
     "/logout",
     isAuth,
+    attachUser,
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const token = getTokenFromHeader(req);
@@ -76,7 +78,7 @@ export default (app: Router): void => {
         }
 
         const authServiceInstance = Container.get(AuthService);
-        await authServiceInstance.logout(token);
+        await authServiceInstance.logout(token, req.user!._id);
 
         return res.status(204).send();
       } catch (error: unknown) {
