@@ -1,0 +1,74 @@
+# Archivos y directorios a ignorar en el contexto de Docker
+
+# Dependencias
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# NO ignorar package-lock.json - es necesario para npm ci
+# package-lock.json
+
+# Archivos de build
+dist/
+build/
+*.tsbuildinfo
+
+# Archivos de desarrollo
+.env.local
+.env.development
+.env.test
+*.local
+
+# Logs
+logs/
+*.log
+
+# Archivos temporales
+.tmp/
+tmp/
+temp/
+
+# Coverage y testing
+coverage/
+.coverage
+.nyc_output
+junit.xml
+
+# Editor y IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Documentación
+README.md
+docs/
+*.md
+
+# Scripts de desarrollo
+scripts/
+tools/
+
+# Archivos de configuración local
+.env.example
+.env.sample

@@ -1,0 +1,86 @@
+# Docker Compose para proyecto TypeScript
+services:
+  # Servicio de la aplicación Node.js/TypeScript
+  app:
+    build:
+      context: .
+      target: development # Usar stage de desarrollo por defecto
+    container_name: tyba_challenge_app
+    restart: unless-stopped
+    ports:
+      - '${PORT:-3000}:3000'
+      - '9229:9229' # Puerto para debugging
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - MONGODB_URI=${MONGODB_URI}
+      - PORT=${PORT}
+      - TS_NODE_PROJECT=./tsconfig.json
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ALGO=${JWT_ALGO}
+    depends_on:
+      mongo:
+        condition: service_healthy
+    volumes:
+      - ./src:/usr/src/app/src:ro
+      - ./package.json:/usr/src/app/package.json:ro
+      - ./package-lock.json:/usr/src/app/package-lock.json:ro
+      - ./tsconfig.json:/usr/src/app/tsconfig.json:ro
+      - ./.env:/usr/src/app/.env:ro
+      - node_modules_cache:/usr/src/app/node_modules
+      # Evitar que node_modules se sobrescriba
+      - /usr/src/app/node_modules
+    networks:
+      - app-network
+    entrypoint: ['/usr/src/app/wait_for_db.sh']
+    command: ['npm', 'run', 'dev']
+
+  # Servicio de MongoDB
+  mongo:
+    image: mongo:8.0
+    container_name: tyba_challenge_mongo
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+    volumes:
+      - mongo_data:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - app-network
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', "db.runCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # Servicio opcional: Mongo Express (interfaz web para MongoDB)
+  mongo-express:
+    image: mongo-express:1.0.2
+    container_name: tyba_challenge_mongo_express
+    restart: unless-stopped
+    ports:
+      - '8081:8081'
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${ME_CONFIG_MONGODB_ADMINUSERNAME}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${ME_CONFIG_MONGODB_ADMINPASSWORD}
+      - ME_CONFIG_MONGODB_URL=${ME_CONFIG_MONGODB_URL}
+      - ME_CONFIG_BASICAUTH_USERNAME=${ME_CONFIG_BASICAUTH_USERNAME}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${ME_CONFIG_BASICAUTH_PASSWORD}
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - app-network
+
+# Volúmenes persistentes
+volumes:
+  mongo_data:
+
+# Red personalizada
+networks:
+  app-network:
+    driver: bridge

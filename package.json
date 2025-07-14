@@ -2,7 +2,7 @@
   "name": "tyba-challenge",
   "version": "1.0.0",
   "type": "module",
-  "description": "",
+  "description": "TYBA Challenge - Node.js TypeScript API with MongoDB",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
@@ -13,7 +13,11 @@
     "lint:fix": "eslint src/**/*.ts --fix",
     "format": "prettier --write src/**/*.ts",
     "type-check": "tsc --noEmit",
-    "prepare": "husky"
+    "prepare": "husky",
+    "docker:build": "docker compose build",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
@@ -30,6 +34,7 @@
   "packageManager": "pnpm@10.13.1",
   "dependencies": {
     "argon2": "^0.43.0",
+    "axios": "^1.10.0",
     "celebrate": "^15.0.3",
     "cors": "^2.8.5",
     "dotenv": "^17.2.0",
@@ -43,20 +48,30 @@
     "typedi": "^0.10.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@eslint/js": "^9.31.0",
+    "@jest/globals": "^30.0.4",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.0.13",
+    "babel-jest": "^30.0.4",
     "eslint": "^9.31.0",
     "globals": "^16.3.0",
     "husky": "^9.1.7",
+    "jest": "^30.0.4",
     "lint-staged": "^16.1.2",
     "prettier": "^3.6.2",
+    "ts-jest": "^29.4.0",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.36.0"
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
   }
 }
