@@ -59,7 +59,7 @@ El proyecto sigue una arquitectura modular y escalable con las siguientes capas:
 
 ```
 src/
-├── api/          # Controladores y rutas
+├── api/          # Middlewares y rutas
 ├── config/       # Configuraciones de la aplicación
 ├── interfaces/   # Interfaces TypeScript
 ├── loaders/      # Inicializadores de servicios
