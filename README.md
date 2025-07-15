@@ -31,7 +31,7 @@ Tyba Challenge es una aplicación backend que proporciona servicios de autentica
 
 ## 🚧 Características en Desarrollo
 
-- [ ] Endpoint para obtener restaurantes por ciudad o coordenadas
+- [x] Endpoint para obtener restaurantes por ciudad o coordenadas
 - [ ] Pruebas unitarias
 - [ ] Paginación para logs de transacciones
 - [ ] Frontend sencillo para interacción con la API
