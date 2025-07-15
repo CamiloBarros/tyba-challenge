@@ -161,7 +161,7 @@ Authorization: Bearer {token}
 **Obtener logs del usuario** (requiere autenticación)
 
 ```http
-GET /api/transactions
+GET /api/transactions/history/:userId
 Authorization: Bearer {token}
 ```
 
