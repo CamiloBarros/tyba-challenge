@@ -10,26 +10,27 @@ export const getTokenFromHeader = (req: Request): string | undefined => {
     return authHeader.split(' ')[1];
   }
   return undefined;
-}
+};
 
-const checkBlacklistToken = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+const checkBlacklistToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<Response | void> => {
   try {
-    console.log('Checking token in blacklist...');
-
     const token = getTokenFromHeader(req);
 
     if (token) {
       // Verificar si el token está en blacklist
       const isBlacklist = await blacklistedToken.findOne({ token });
-      console.log(`Token ${token} is in blacklist: ${isBlacklist ? 'yes' : 'no'}`);
-      
+
       // Si el token está en blacklist, retornar error 401
 
       if (isBlacklist) {
         return res.status(401).json({ error: 'Token has been invalidated' });
       }
     }
-    
+
     next();
   } catch (error: unknown) {
     if (error instanceof Error) {
