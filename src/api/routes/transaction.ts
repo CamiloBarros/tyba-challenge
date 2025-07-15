@@ -10,13 +10,13 @@ export default (app: Router): void => {
   app.use('/transactions', route);
 
   route.get(
-    '/history',
+    '/history/:userId',
     isAuth,
     attachUser,
     async (req: Request, res: Response) => {
       try {
-        // obteniendo el ID del usuario desde el query param
-        const userId = req.query.userId as string;
+        // obteniendo el ID del usuario desde la url
+        const { userId } = req.params;
         if (!userId) {
           return res.status(400).json({ error: 'User ID is required' });
         }
