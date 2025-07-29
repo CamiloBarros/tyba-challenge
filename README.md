@@ -273,8 +273,8 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 
 **Tu Nombre**
 
-- GitHub: [@tu-usuario](https://github.com/CamiloBarros)
-- LinkedIn: [tu-perfil](https://linkedin.com/in/ocbarrosr)
+- GitHub: [@CamiloBarros](https://github.com/CamiloBarros)
+- LinkedIn: [ocbarrosr](https://linkedin.com/in/ocbarrosr)
 
 ## 🙏 Agradecimientos
 
